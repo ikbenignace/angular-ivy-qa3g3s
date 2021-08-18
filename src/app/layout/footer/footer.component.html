@@ -1,0 +1,13 @@
+<div class="row mt-5">
+  <div class="col">
+    <hr />
+    <p class="text-center">
+      {{organization.Name}}<br>
+      {{organization.Address.Street}} {{organization.Address.Nr}}<br>
+      {{organization.Address.PostCode}} {{organization.Address.Location}}<br>
+      Ondernemingsnummer: {{organization.BTWNumber}}<br>
+      <span *ngIf="organization.ChamberOfCommerceAddress">RPR: {{organization.ChamberOfCommerceAddress.Name}}<br></span>
+      <span></span><a *ngIf="organization.Address.Website" [href]="(organization.Address.Website.startsWith('http')?organization.Address.Website:'http://'+organization.Address.Website)" target="_blank">{{organization.Address.Website}}</a><span *ngIf="organization.Address.Website && organization.Address.Email">&nbsp;&nbsp;-&nbsp;&nbsp;</span><a [href]="'mailto:'+organization.Address.Email">{{organization.Address.Email}}</a><br>
+    </p>
+  </div>
+</div>

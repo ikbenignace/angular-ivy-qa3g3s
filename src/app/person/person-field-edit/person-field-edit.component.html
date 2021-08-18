@@ -1,0 +1,222 @@
+<app-customentity-field-render *ngIf="!field.CustomEntityDefaultFieldId  && language"
+                               [field]="field"
+                               [fieldname]="fieldname"
+                               [allValidatorsVisible]="allValidatorsVisible"
+                               [required]="required"
+                               [requiredtext]="requiredtext"
+                               [value]="getFieldValue(field)"></app-customentity-field-render>
+
+<div *ngIf="field.CustomEntityDefaultFieldId && language">
+  <!-- firstname -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==1">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="text" class="form-control" id="fieldControl" name="fieldControl"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.FirstName"
+             #fieldControl="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- lastname -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==2">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="text" class="form-control" id="fieldControl" name="fieldControl"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.LastName"
+             #fieldControl="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Telefoon thuis -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==9">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="text" class="form-control" id="fieldControl" name="fieldControl"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.HomePhone"
+             #fieldControl="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- WorkPhone -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==10">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="text" class="form-control" id="workPhone" name="workPhone"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.WorkPhone"
+             #workPhone="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="workPhone.invalid && (workPhone.dirty || workPhone.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Email thuis -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==11">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="text" class="form-control" id="fieldControl" name="fieldControl"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.HomeEmail"
+             #fieldControl="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- WorkEmail -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==12">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="text" class="form-control" id="fieldControl" name="fieldControl"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.WorkEmail"
+             #fieldControl="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Website -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==13">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="url" class="form-control" id="fieldControl" name="fieldControl"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.Website"
+             #fieldControl="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+
+  <!-- BirthPlace -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==15">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="text" class="form-control" id="fieldControl" name="fieldControl"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.BirthPlace"
+             #fieldControl="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Geslacht -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==16">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <select class="form-control" id="fieldControl" name="fieldControl"
+              [ngClass]="{'showValidator':allValidatorsVisible}"
+              [(ngModel)]="person.GenderId"
+              #fieldControl="ngModel"
+              [required]="required">
+        <option value="undefined">---</option>
+        <option *ngFor="let option of options" [value]="option.Id">{{option.Name}}</option>
+      </select>
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- NationalityId -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==18">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <select class="form-control" id="fieldControl" name="fieldControl"
+              [ngClass]="{'showValidator':allValidatorsVisible}"
+              [(ngModel)]="person.NationalityId"
+              #fieldControl="ngModel"
+              [required]="required">
+        <option value="null">---</option>
+        <option *ngFor="let option of nationalities" [value]="option.Id">{{language=='FR'?option.Frans: option.Name}}</option>
+      </select>
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==17">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="required">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <input type="text" class="form-control" id="fieldControl" name="fieldControl"
+             [ngClass]="{'showValidator':allValidatorsVisible}"
+             [(ngModel)]="person.RegisterNumber"
+             #fieldControl="ngModel"
+             [required]="required" />
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+  <!-- MoreInformation -->
+  <div class="form-row" *ngIf="field.CustomEntityDefaultFieldId==19">
+    <label for="fieldControl" class="col-md-4 col-form-label">
+      {{fieldname}} <span *ngIf="field.RequiredPublic">*</span>
+    </label>
+    <div class="form-group col-md-8">
+      <textarea rows="10" type="text" class="form-control" id="fieldControl" name="fieldControl"
+                [ngClass]="{'showValidator':allValidatorsVisible}"
+                [(ngModel)]="person.MoreInformation"
+                #fieldControl="ngModel"
+                [required]="required"></textarea>
+      <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+        {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+      </div>
+    </div>
+  </div>
+
+
+</div>

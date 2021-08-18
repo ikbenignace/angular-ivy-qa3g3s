@@ -1,0 +1,245 @@
+/* You can add global styles to this file, and also import other style files */
+$primary-color: #e01a76;
+$alert: #dc3545;
+$green: #008000;
+$blue: #2576b4;
+/* Provide sufficient contrast against white background */
+body {
+  color: #49515a;
+}
+
+a {
+  color: $blue;
+}
+
+a:hover {
+  color: $blue;
+}
+
+h3 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.nav-item {
+  padding-left: 10px;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show .nav-link,
+.btn-primary,
+.btn-primary:focus,
+.btn.primary.active {
+  background-color: #2576b4;
+}
+
+.btn-primary, .btn-primary:focus {
+  border-color: #2576b4;
+  box-shadow: none;
+}
+
+.btn-primary:hover {
+  background-color: #1c5a8a;
+  border-color: #1c5a8a;
+}
+
+.green,
+.btn-primary.green:hover,
+.btn-primary.green:focus,
+.btn.primary.green.active {
+  background-color: $green;
+}
+
+
+.btn-link {
+  color: #8e9ead;
+}
+
+.btn-link:hover {
+  color: #2576b4;
+  text-decoration: none;
+}
+
+
+
+.header {
+  padding: 30px 15px;
+  background: #e9ecef;
+  border-radius: .5rem;
+}
+
+.header .name {
+  text-align: center;
+}
+
+.header .profile-image, .header .profile-social {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.header .profile-content {
+  width: 100%;
+}
+
+.header .profile-content .name {
+  font-size: 38px;
+  margin-bottom: 15px;
+  margin-top: 30px;
+}
+
+.header .profile-social {
+  margin-top: 10px;
+}
+
+.profile-social .fas, .profile-social .fab, .profile-social .far {
+  width: 36px;
+  height: 36px;
+  padding-top: 8px;
+  margin-right: 5px;
+  font-size: 20px;
+  text-align: center;
+  text-decoration: none;
+  background: #bcc5ce;
+  color: white;
+  border-radius: 50%;
+}
+
+.profile-social .fas:hover, .profile-social .fab:hover, .profile-social .far:hover {
+  background: #8e9ead;
+  color: white;
+  text-decoration: none;
+}
+
+.info {
+  text-align: right;
+}
+
+.info .fas {
+  color: #49515a;
+  font-size: 25px;
+  text-decoration: none;
+}
+
+.page-title {
+  padding: 30px 15px;
+  background: #e9ecef;
+  border-radius: .5rem;
+}
+
+.page-title .title {
+  text-align: center;
+}
+
+.page-title .intro {
+  text-align: left;
+}
+
+.page-content-intro {
+  margin-bottom: 20px;
+}
+
+.checkbox {
+  padding-top: 5px;
+}
+
+.form-check-label {
+  text-align: left;
+}
+
+.form-check-input {
+  margin-top: .17rem;
+}
+
+.ng-invalid.ng-touched,
+.ng-invalid.showValidator {
+  border-color: $alert;
+}
+
+button:disabled,
+button.disabled {
+  //pointer-events: none;
+}
+
+input[type=date]::-webkit-inner-spin-button,
+input[type=date]::-webkit-calendar-picker-indicator {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.invalid-feedback {
+  display: block;
+}
+
+
+@media (min-width: 576px) {
+  label {
+    text-align: left;
+  }
+}
+
+@media (min-width: 768px) {
+  .header .profile-image {
+    float: left !important;
+    margin-left: 0px;
+    margin-right: 30px;
+  }
+
+  .header .profile-content {
+    text-align: left;
+    width: 58%;
+  }
+
+  .header .profile-social {
+    text-align: right;
+    width: 7%;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .header .profile-content .name {
+    text-align: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+
+  .header .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+
+  .fas, .fab, .far {
+    margin-right: 0px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+}
+
+@media (min-width: 992px) {
+  .header .profile-content {
+    width: 68%;
+  }
+
+  .header .profile-social {
+    width: 7%;
+  }
+
+  .page-content {
+    width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  .header .profile-content {
+    width: 72%;
+  }
+
+  .header .profile-social {
+    width: 7%;
+  }
+}

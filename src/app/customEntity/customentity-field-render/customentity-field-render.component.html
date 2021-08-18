@@ -1,0 +1,54 @@
+<!-- Textfield -->
+<div class="form-row" *ngIf="field.CustomEntityFieldTypeId==1">
+  <label for="fieldControl" class="col-md-4 col-form-label">
+    {{fieldname}} <span *ngIf="field.RequiredPublic">*</span>
+  </label>
+  <div class="form-group col-md-8">
+    <input type="text" class="form-control" id="fieldControl" name="fieldControl"
+           [ngClass]="{'showValidator':allValidatorsVisible}"
+           [(ngModel)]="value.Value"
+           #fieldControl="ngModel"
+           [required]="required" />
+    <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+      {{requiredtext.replace("[FIELD_NAME]", fieldname)}}
+    </div>
+  </div>
+</div>
+
+<!-- textarea -->
+<div class="form-row" *ngIf="field.CustomEntityFieldTypeId==2">
+  <label for="fieldControl" class="col-md-4 col-form-label">
+    {{fieldname}} <span *ngIf="field.RequiredPublic">*</span>
+  </label>
+  <div class="form-group col-md-8">
+    <textarea rows="10" class="form-control" id="fieldControl" name="fieldControl"
+              [ngClass]="{'showValidator':allValidatorsVisible}"
+              [(ngModel)]="value.Value"
+              #fieldControl="ngModel"
+               [required]="required"></textarea>
+    <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+      {{requiredtext.replace("[FIELD_NAME]", this.fieldname)}}
+    </div>
+  </div>
+</div>
+
+
+<!-- dropsdown -->
+<div class="form-row" *ngIf="field.CustomEntityFieldTypeId==3">
+  <label for="fieldControl" class="col-md-4 col-form-label">
+    {{fieldname}} <span *ngIf="field.RequiredPublic">*</span>
+  </label>
+  <div class="form-group col-md-8">
+    <select class="form-control" id="teamId" name="teamId"
+            [ngClass]="{'showValidator':allValidatorsVisible}"
+            [(ngModel)]="value.OptionId"
+            #fieldControl="ngModel"
+              [required]="required">
+      <option value="null">---</option>
+      <option *ngFor="let option of field.CustomEntityOptions" [value]="option.Id">{{option.Name}}</option>
+    </select>
+    <div class="invalid-feedback" *ngIf="fieldControl.invalid && (fieldControl.dirty || fieldControl.touched || allValidatorsVisible)">
+      {{requiredtext.replace("[FIELD_NAME]", this.fieldname)}}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,234 @@
+<div>
+  <br>
+  <div *ngIf="!paymentKey && person">
+    <div class="page-title">
+      <div class="col title">
+        <h2>Activiteiten voor {{person.FirstName}} {{person.LastName}}</h2>
+      </div>
+    </div>
+    <br>
+
+    <div class="row page-content">
+      <div class="col">
+        <div class="form-row">
+          <div class="col-md-12 mt-4 mb-2">
+            <h3>Activiteiten</h3>
+          </div>
+        </div>
+        <div class="form-row" *ngFor="let a of activities">
+          <div class="col-md-12 mt-4 mb-2 bg-light border rounded p-3">
+            <h4><i class="far fa-calendar-alt ml-1 mr-3" aria-hidden="true"></i>{{getStartDate(a) | date:'EEEE'|titlecase}} {{getStartDate(a) | date:'d LLLL yyyy'}}<span *ngIf="a.WhereAndWhen > 1">&nbsp;&nbsp;-&nbsp;&nbsp;{{getEndDate(a) | date:'d LLLL yyyy'}}</span><span *ngIf="a.WhereAndWhen == 1 && getStartDateFromTime(a)" style="font-size: 1.25rem;">&nbsp;&nbsp;({{getStartDateFromTime(a)| date:'HH:mm'}}<span *ngIf="getStartDateTillTime(a)" style="font-size: 1.25rem;">&nbsp;-&nbsp;{{getStartDateTillTime(a)| date:'HH:mm'}}</span>)</span></h4>
+            <div style="padding-left: 40px;">
+              <h5>{{a.Name}}</h5>
+              <h6 *ngIf="getAddress(a) && getAddress(a).Name && a.WhereAndWhen == 1" class="mb-0"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>&nbsp;&nbsp;{{getAddress(a).Name}}</h6>
+              <span *ngIf="getAddress(a) && a.WhereAndWhen == 1" style="display: block; padding-left: 20px;">{{getAddress(a).Street}}<br>{{getAddress(a).PostCode}} {{getAddress(a).Location}}</span>
+            </div>
+            <div *ngIf="a.showMoments && a.WhereAndWhen == 3">
+              <hr />
+              <ul class="form-row moments">
+                <li *ngFor="let m of a.Moments" class="mb-3">
+                  <i class="far fa-calendar-alt ml-1 mr-3" aria-hidden="true"></i><b>{{m.StartDateTime| date:'EEEE'|titlecase}} {{m.StartDateTime| date:'d LLLL yyyy'}}</b>&nbsp;van&nbsp;{{m.StartDateTime| date:'HH:mm'}}&nbsp;tot&nbsp;{{m.EndDateTime| date:'HH:mm'}}
+                  <span *ngIf="m.Address">
+                    <br /><span style="margin-left: 35px;">{{m.Address.Name}},&nbsp;{{m.Address.Street}},&nbsp;{{m.Address.PostCode}} {{m.Address.Location}} </span>
+                  </span>
+                </li>
+              </ul>
+            </div>
+            <div *ngIf="a.WhereAndWhen == 3">
+              <a style="margin-left: 40px; cursor:pointer;" *ngIf="a.Moments" (click)="a.showMoments=!a.showMoments">
+                <span *ngIf="!a.showMoments"><i class="fas fa-chevron-down mr-2"></i>Toon alle data en plaatsen</span>
+                <span *ngIf="a.showMoments"><i class="fas fa-chevron-up mr-2"></i>Sluit alle data en plaatsen</span>
+              </a>
+            </div>
+            <hr />
+            <div class="form-row" *ngIf="!a.TicketTypes || a.TicketTypes.length==0">
+              <h5 class="col-md-9 text-md-right" style="padding-top:10px;padding-left:8px;"><span *ngIf="getPrice(a)>0">Openstaand lidgeld te betalen:&nbsp;&euro;&nbsp;{{getPrice(a)}}</span></h5>
+              <div class="col-md-3">
+                <button *ngIf="!isAttending(a) && !isFull(a) && a.CanSubscribe" class="btn btn-primary btn-block" (click)="subscribe(a)">
+                  <i *ngIf="!a.isSubmitting" class="fas fa-plus-circle mr-2" aria-hidden="true"></i>
+                  <i *ngIf="a.isSubmitting" class="fas fa-spinner fa-pulse mr-2" aria-hidden="true"></i>Inschrijven
+                </button>
+                <span *ngIf="isAttending(a,t)">
+                  <!--<input type="hidden" #paymentUrl [(ngModel)]="getPaymentUrl(a)" />-->
+                  <button *ngIf="!isFull(a,t) && (!a.payment || a.payment.Succeed)" class="btn btn-success btn-block" disabled><i class="fas fa-check-circle mr-2" aria-hidden="true"></i>Ingeschreven</button>
+                  <a *ngIf="!isFull(a) && a.payment && !a.payment.Succeed" href="{{a.payment.PaymentUrl}}" class="btn btn-warning btn-block"><i class="fas fa-credit-card mr-2" aria-hidden="true"></i>Betaal nu</a>
+                  <!--<a *ngIf="paymentUrl" class="btn btn-danger btn-block" href="paymentUrl"><i class="fas fa-check-circle mr-2" aria-hidden="true"></i>Betaling nog te voltooien</a>-->
+                </span>
+                <button *ngIf="isFull(a) && (!a.payment || a.payment.Succeed)" class="btn btn-danger btn-block" disabled><i class="fas fa-times-circle mr-2" aria-hidden="true"></i>Volzet</button>
+                <button *ngIf="!isAttending(a,t) && !isFull(a,t) && !a.CanSubscribe" class="btn btn-warning btn-block" disabled>
+                  <i class="fas fa-clock mr-2" aria-hidden="true"></i>Afgesloten
+                </button>
+              </div>
+            </div>
+            <div class="form-row" *ngFor="let t of a.TicketTypes">
+              <h5 class="col-md-9 text-md-right" style="padding-top:10px;padding-left:8px;">{{t.Name}}&nbsp;&bull;&nbsp;&euro;&nbsp;&nbsp;{{getPrice(a,t)}}</h5>
+              <div class="col-md-3">
+                <button *ngIf="!isAttending(a,t) && !isFull(a,t) && a.CanSubscribe" class="btn btn-primary btn-block" (click)="subscribe(a,t)">
+                  <i *ngIf="!t.isSubmitting" class="fas fa-plus-circle mr-2" aria-hidden="true"></i>
+                  <i *ngIf="t.isSubmitting" class="fas fa-spinner fa-pulse mr-2" aria-hidden="true"></i>Inschrijven
+                </button>
+                <span *ngIf="isAttending(a,t)">
+                  <!--<input type="hidden" #paymentUrl [(ngModel)]="getPaymentUrl(a)" />-->
+                  <button *ngIf="!isFull(a,t) && (!a.payment || a.payment.Succeed)" class="btn btn-success btn-block" disabled><i class="fas fa-check-circle mr-2" aria-hidden="true"></i>Ingeschreven</button>
+                  <a *ngIf="!isFull(a,t) && a.payment && !a.payment.Succeed" href="{{a.payment.PaymentUrl}}" class="btn btn-warning btn-block"><i class="fas fa-credit-card mr-2" aria-hidden="true"></i>Betaal nu</a>
+                  <!--<a *ngIf="paymentUrl" class="btn btn-danger btn-block" href="paymentUrl"><i class="fas fa-check-circle mr-2" aria-hidden="true"></i>Betaling nog te voltooien</a>-->
+                </span>
+                <button *ngIf="isFull(a,t) && (!a.payment || a.payment.Succeed)" class="btn btn-danger btn-block" disabled><i class="fas fa-times-circle mr-2" aria-hidden="true"></i>Volzet</button>
+                <button *ngIf="!isAttending(a,t) && !isFull(a,t) && !a.CanSubscribe" class="btn btn-warning btn-block" disabled>
+                  <i class="fas fa-clock mr-2" aria-hidden="true"></i>Afgesloten
+                </button>
+              </div>
+            </div>
+            <div class="form-row" *ngIf="!isFull(a,t) && a.payment && !a.payment.Succeed">
+              <div class="col-md-12" style="text-align:right">
+                <span>Je bent pas ingeschreven wanneer je betaald hebt. Je betaling ontbreekt nog.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row" *ngIf="!isLoading && (!activities || activities.length ==0)">
+          <div class="col-md-9">
+            Er zijn momenteel geen activiteiten waar {{person.FirstName }} {{person.LastName }} zich kan op inschrijven.
+          </div>
+        </div>
+        <div class="row" *ngIf="isLoading">
+          <div class="col-md-9">
+            <i class="fas fa-spinner fa-pulse mr-2" aria-hidden="true"></i> Bezig met laden...
+          </div>
+        </div>
+      </div>
+
+      <!--
+      <div class="row page-content" *ngIf="submitted">
+        <div class="col">
+          <div class="form-row">
+            <div class="col-md-12 mt-4 mb-2">
+              <h3>Bedankt voor je inschrijving</h3>
+            </div>
+            <div class="col-md-12">
+              We hebben je inschrijving goed ontvangen. Bedankt daarvoor! Van zodra we je inschrijving nagekeken hebben, krijg je de nodige praktische afspraken via mail toegestuurd.
+            </div>
+          </div>
+          <div class="form-row my-5">
+            <div class="col-12 text-center">
+              <a class="btn btn-primary" href="/NL/{{accessKey}}/form/{{formKey}}/{{formId}}/document/0"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Nieuwe inschrijving</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row my-4" *ngIf="currentPageIndex == 0 &&!submitted">
+        <div class="col-12 text-center">
+          <button class="btn btn-primary" (click)="nextPage()" [disabled]="getFormGroup('page'+ pages[currentPageIndex].Id).invalid" role="button"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Start</button>
+        </div>
+      </div>
+      <div class="form-row my-4" *ngIf="currentPageIndex > 0 &&!submitted">
+        <div class="col-12">
+          <hr>
+        </div>
+        <div class="col-6 text-left">
+          <button class="btn btn-link pl-0" (click)="prevPage()"><i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>Terug</button>
+        </div>
+        <div class="col-6 text-right">
+          <button *ngIf="currentPageIndex != pages.length-1" class="btn btn-primary" (click)="nextPage()" [disabled]="getFormGroup('page'+ pages[currentPageIndex].Id).invalid" role="button">Volgende<i class="fas fa-arrow-circle-right ml-2" aria-hidden="true"></i></button>
+          <button *ngIf="currentPageIndex == pages.length-1" class="btn btn-primary" (click)="submitDocument()" [disabled]="getFormGroup('page'+ pages[currentPageIndex].Id).invalid" role="button">Indienen<i class="fas fa-arrow-circle-right ml-2" aria-hidden="true"></i></button>
+        </div>
+      </div>-->
+    </div>
+  </div>
+  <div *ngIf="paymentKey && payment && payment.Succeed">
+    <div class="page-title">
+      <div class="col title">
+        <h2>Ingeschreven</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row page-content">
+      <div class="col">
+        <div class="form-row">
+          <div class="col-md-12 mt-4 mb-2">
+            <h3>Bedankt voor je inschrijving</h3>
+          </div>
+          <div class="col-md-12">
+            We hebben je inschrijving goed ontvangen. Bedankt daarvoor! Van zodra we je inschrijving nagekeken hebben, krijg je de nodige praktische afspraken via mail toegestuurd.
+          </div>
+        </div>
+        <div class="form-row my-5">
+          <div class="col-12 text-center">
+            <a *ngIf="!type" class="btn btn-primary" href="/NL/{{accessKey}}/activity/{{memberKey}}/subscribe"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Terug naar overzicht</a>
+            <a *ngIf="type" class="btn btn-primary" href="/NL/{{accessKey}}/activity/{{memberKey}}/subscribe/{{type}}"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Terug naar overzicht</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="paymentKey && payment && payment.Canceled">
+    <div class="page-title">
+      <div class="col title">
+        <h2>Betaling geannuleerd</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row page-content">
+      <div class="col">
+        <div class="form-row">
+          <div class="col-md-12 mt-4 mb-2">
+            <h3>Je betaling is geannuleerd</h3>
+          </div>
+          <div class="col-md-12">
+            Je hebt de betaling afgebroken, daardoor ben je niet ingeschreven. Klik op de knop hieronder om terug naar het overzicht te gaan.
+          </div>
+        </div>
+        <div class="form-row my-5">
+          <div class="col-12 text-center">
+            <a *ngIf="!type" class="btn btn-primary" href="/NL/{{accessKey}}/activity/{{memberKey}}/subscribe"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Terug naar overzicht</a>
+            <a *ngIf="type" class="btn btn-primary" href="/NL/{{accessKey}}/activity/{{memberKey}}/subscribe/{{type}}"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Terug naar overzicht</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="paymentKey && payment && !payment.Canceled && !payment.Succeed">
+    <div class="page-title">
+      <div class="col title">
+        <h2>Betaling nog niet gelukt</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row page-content">
+      <div class="col">
+        <div class="form-row">
+          <div class="col-md-12 mt-4 mb-2">
+            <h3>Je betaling is nog niet voltooid</h3>
+          </div>
+          <div class="col-md-12">
+            Je betaling is nog niet volledig, daardoor ben je niet ingeschreven. Klik op de knop hieronder om je betaling verder af te werken.
+          </div>
+        </div>
+        <div class="form-row my-5">
+          <div class="col-12 text-center">
+            <a class="btn btn-primary" href="{{payment.PaymentUrl}}"><i class="fas fa-credit-card mr-2" aria-hidden="true"></i>Betaal nu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="paymentKey && isLoading">
+    <div class="page-title">
+      <div class="col title">
+        <h2>Betaling controleren</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row" *ngIf="isLoading">
+      <div class="col-md-9">
+        <i class="fas fa-spinner fa-pulse mr-2" aria-hidden="true"></i> Bezig met laden...
+      </div>
+    </div>
+  </div>
+
+</div>
+

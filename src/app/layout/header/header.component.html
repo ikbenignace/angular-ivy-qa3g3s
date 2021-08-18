@@ -1,0 +1,21 @@
+
+<header class="header">
+  <div class="container clearfix">
+    <div class="row h-100">
+      <div class="profile-image">
+        <img class="rounded-circle" [src]="'https://app.assistonline.eu/'+organization.LogoFileUrl" height="180" />
+      </div>
+      <div class="profile-content float-left my-auto">
+        <h1 class="name">
+          {{organization.Short || organization.Name}}
+        </h1>
+      </div>
+      <div class="profile-social my-auto">
+        <a *ngIf="organization.Address.Website" [href]="organization.Address.Website.startsWith('http')?organization.Address.Website:'http://'+organization.Address.Website" target="_blank"><i class="fas fa-external-link-square-alt"></i></a>
+        <a *ngIf="organization.Address.FacebookUrl" [href]="organization.FacebookUrl.startsWith('http')?organization.FacebookUrl:'http://'+organization.FacebookUrl" target="_blank"><i class="fab fa-facebook-f"></i></a>
+        <a *ngIf="organization.Address.InstagramUrl" [href]="organization.InstagramUrl.startsWith('http')?organization.InstagramUrl:'http://'+organization.InstagramUrl" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a *ngIf="organization.Address.Email" [href]="'mailto:'+organization.Address.Email"><i class="far fa-envelope"></i></a>
+      </div>
+    </div>
+  </div>
+</header>

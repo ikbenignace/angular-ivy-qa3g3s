@@ -1,0 +1,71 @@
+<div *ngIf="person">
+  <br>
+  <div>
+    <div class="page-title">
+      <div class="col title">
+        <h2>Activiteiten voor {{person.FirstName}} {{person.LastName}}</h2>
+      </div>
+    </div>
+    <br>
+
+    <div class="row page-content">
+      <div class="col">
+        <div class="form-row">
+          <div class="col-md-12 mt-4 mb-2">
+            <h3>Komende activiteiten</h3>
+          </div>
+        </div>
+        <div class="form-row" *ngFor="let m of momentsFuture">
+          <div class="col-md-12 mt-4 mb-2 bg-light border rounded p-3">
+            <h4><i class="far fa-calendar-alt ml-1 mr-3" aria-hidden="true"></i>{{m.StartDateTime | date:'EEEE'|titlecase}} {{m.StartDateTime | date:'d LLLL yyyy'}}&nbsp;&nbsp;<small class="text-muted">({{m.StartDateTime.indexOf('T00:00:00')>-1? (m.Activity.FromTime | date:'HHumm'): (m.StartDateTime | date:'HHumm')}} - {{m.EndDateTime.indexOf('T00:00:00')>-1? (m.Activity.TillTime | date:'HHumm'): (m.EndDateTime | date:'HHumm')}})</small></h4>
+            <div style="padding-left: 40px;">
+              <h5 *ngIf="m.Activity">{{m.Activity.Name}}</h5>
+              <h5 *ngIf="m.MemberTeam">{{m.MemberTeam.Name}}</h5>
+              <h6 *ngIf="m.Address" class="mb-0"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>&nbsp;&nbsp;{{m.Address.Name}}</h6>
+              <span *ngIf="m.Address" style="display: block; padding-left: 20px;">{{m.Address.Street}}<br>{{m.Address.Postcode}} {{m.Address.Location}}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="!isLoading && (!momentsFuture || momentsFuture.length ==0)">
+          <div class="col-md-9">
+            Er zijn momenteel geen activiteiten waar {{person.FirstName }} {{person.LastName }} op is ingeschreven.
+          </div>
+        </div>
+        <div class="row" *ngIf="isLoading">
+          <div class="col-md-9">
+            <i class="fas fa-spinner fa-pulse mr-2" aria-hidden="true"></i> Bezig met laden...
+          </div>
+        </div>
+
+        <div *ngIf="momentsPast && momentsPast.length >0">
+          <div class="form-row">
+            <div class="col-md-12 mt-4 mb-2">
+              <h3>Verlopen activiteiten</h3>
+            </div>
+          </div>
+          <div class="form-row" *ngFor="let m of momentsPast">
+            <div class="col-md-12 mt-4 mb-2 bg-light border rounded p-3">
+              <h4><i class="far fa-calendar-alt ml-1 mr-3" aria-hidden="true"></i>{{m.StartDateTime | date:'EEEE'|titlecase}} {{m.StartDateTime | date:'d LLLL yyyy'}}&nbsp;&nbsp;<small class="text-muted">({{m.StartDateTime.indexOf('T00:00:00')>-1? (m.Activity.FromTime | date:'HHumm'): (m.StartDateTime | date:'HHumm')}} - {{m.EndDateTime.indexOf('T00:00:00')>-1? (m.Activity.TillTime | date:'HHumm'): (m.EndDateTime | date:'HHumm')}})</small></h4>
+              <div style="padding-left: 40px;">
+                <h5 *ngIf="m.Activity">{{m.Activity.Name}}</h5>
+                <h5 *ngIf="m.MemberTeam">{{m.MemberTeam.Name}}</h5>
+                <h6 *ngIf="m.Address" class="mb-0"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>&nbsp;&nbsp;{{m.Address.Name}}</h6>
+                <span *ngIf="m.Address" style="display: block; padding-left: 20px;">{{m.Address.Street}}<br>{{m.Address.Postcode}} {{m.Address.Location}}</span>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row" *ngIf="isLoading">
+            <div class="col-md-9">
+              <i class="fas fa-spinner fa-pulse mr-2" aria-hidden="true"></i> Bezig met laden...
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+

@@ -1,0 +1,433 @@
+<br>
+
+<div class="page-title">
+  <div class="col title">
+    <h2 [innerHTML]="introTitle">
+    </h2>
+  </div>
+</div>
+<br>
+
+<div class="row page-content" *ngIf="fields && translations && waitingListMember">
+  <form id="frm" name="frm" (ngSubmit)="onSubmit(frm)" #frm="ngForm">
+    <div class="col" *ngIf="step==1">
+      <div class="row">
+        <div class="col mb-3" [innerHTML]="(defaulttext + introContent) || (isVolunteer? translate('[INTRO_VOLUNTEER]'): translate('[INTRO]'))">
+
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-md-12 mt-4 mb-2">
+          <h3>{{ isVolunteer? translate("[WIE_BENJE]"):translate("[WIE_INSCHRIJVEN]")}}</h3>
+        </div>
+      </div>
+      <div *ngIf="!isVolunteer">
+        <div class="form-row">
+          <label for="member" class="col-md-4 col-form-label">
+            {{translate("[MAAK_KEUZE]")}}
+          </label>
+          <div class="form-group col-md-8 checkbox">
+            <div class="form-check">
+              <input [(ngModel)]="subscriptionType" type="radio" name="subscriptionType" id="subscriptionTypeSelf"
+                     value="self"
+                     class="form-check-input">
+              <label class="form-check-label" for="subscriptionTypeSelf">
+                {{translate("[MEZELF]")}}
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="membersort" id="subscriptionTypeChild" value="child" [(ngModel)]="subscriptionType">
+              <label class="form-check-label" for="subscriptionTypeChild">
+                {{translate("[KIND]")}}
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="membersort" id="subscriptionTypeOther" value="Other" [(ngModel)]="subscriptionType">
+              <label class="form-check-label" for="subscriptionTypeOther">
+                {{translate("[ANDERS]")}}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="firstname" class="col-md-4 col-form-label">
+          {{translateDefaultField(1)}} <span *ngIf="getDefaultField(1).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-8">
+          <input id="firstName" name="firstName" type="text" class="form-control"
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.FirstName"
+                 #firstName="ngModel"
+                 [required]="getDefaultField(1).RequiredWaitinglist">
+          <div class="invalid-feedback" *ngIf="firstName.invalid && (firstName.dirty || firstName.touched || allValidatorsVisible)">
+            {{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(1))}}
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="lastname" class="col-md-4 col-form-label">
+          {{translateDefaultField(2)}} <span *ngIf="getDefaultField(2).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-8">
+          <input id="lastName" name="lastName" type="text" class="form-control"
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.LastName"
+                 #lastName="ngModel"
+                 [required]="getDefaultField(2).RequiredWaitinglist">
+          <div class="invalid-feedback" *ngIf="lastName.invalid && (lastName.dirty || lastName.touched || allValidatorsVisible)">
+            {{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(2))}}
+
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="birthday" class="col-md-4 col-form-label">
+          {{translateDefaultField(14)}} <span *ngIf="getDefaultField(14).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-3">
+          <input type="text" class="form-control" id="birthDate" name="birthDate" placeholder="dd/mm/yyyy"
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.BirthDate"
+                 #birthDate="ngModel"
+                 [required]="getDefaultField(14).RequiredWaitinglist"
+                 (change)="log(birthDate)"
+                 pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}">
+          <div class="invalid-feedback" *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched || allValidatorsVisible)">
+            <span *ngIf="birthDate.errors.required">{{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(14))}}</span>
+            <span *ngIf="birthDate.errors.pattern">{{translate("BIRTHDATE_FORMAAT")}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="languageonschool" class="col-md-4 col-form-label">
+          {{translateDefaultField(16)}} <span *ngIf="getDefaultField(16).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-3">
+          <select class="form-control" id="genderId" name="genderId"
+                  [ngClass]="{'showValidator':allValidatorsVisible}"
+                  [(ngModel)]="waitingListMember.Person.GenderId"
+                  #genderId="ngModel"
+                  (blur)="log(genderId)"
+                  [required]="getDefaultField(16).RequiredWaitinglist">
+            <option value="undefined">---</option>
+            <option value="1">{{translate("Man")}}</option>
+            <option value="2">{{translate("Vrouw")}}</option>
+            <option value="3">{{translate("Ander")}}</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="genderId.invalid && (genderId.dirty || genderId.touched || allValidatorsVisible)">
+            {{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(16))}}
+
+          </div>
+        </div>
+      </div>
+      <div class="form-row my-4">
+        <div class="col-12">
+          <hr />
+        </div>
+        <div class="col-6 text-left">
+        </div>
+        <div class="col-6 text-right">
+          <button class="btn btn-primary" role="button" [ngClass]="{'disabled': !frm.valid}" (click)="next(frm)">{{translate("[VOLGENDE]")}}<i class="fas fa-arrow-circle-right ml-2"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="col" *ngIf="step==2">
+      <div class="row">
+        <div class="col mb-3" [innerHTML]="(defaulttext + introContent)  || (isVolunteer? translate('[INTRO_VOLUNTEER]'): translate('[INTRO]'))">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-11 mt-4 mb-2">
+          <h3 *ngIf="subscriptionType!='self'">
+            {{translate("[WELKE_MEMBERGROUP_FIRSTNAME]")}}
+          </h3>
+          <h3 *ngIf="subscriptionType=='self'">
+            {{isVolunteer? translate("[WELKE_WORKGROUP]"):translate("[WELKE_MEMBERGROUP]")}}
+          </h3>
+
+        </div>
+        <div class="col-1 info mt-auto mb-2">
+          <!--  <h3><a href="http://www.rwdmgirls.be/index.php/nl/trainings" target="_blank"><i class="fas fa-info-circle"></i></a></h3>-->
+        </div>
+      </div>
+
+      <div class="form-row" *ngIf="!isVolunteer">
+        <label for="nationality" class="col-md-4 col-form-label">
+          {{translate(teamName.Name) }}
+        </label>
+        <div class="form-group col-md-8">
+          <select class="form-control" id="teamId" name="teamId"
+                  [ngClass]="{'showValidator':allValidatorsVisible}"
+                  [(ngModel)]="waitingListMember.TeamId"
+                  #teamId="ngModel"
+                  [required]="false">
+            <option value="undefined">---</option>
+            <option *ngFor="let team of memberTeams" [value]="team.Id">{{team.Name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" *ngIf="isVolunteer">
+        <label for="nationality" class="col-md-4 col-form-label">
+          {{translate("[WORKGROUP]")}}
+        </label>
+        <div class="form-group col-md-8">
+          <select class="form-control" id="workgroup" name="workgroup"
+                  [ngClass]="{'showValidator':allValidatorsVisible}"
+                  (change)="addWorkgroup($event.target.value)"
+                  [required]="false">
+            <option value="undefined">---</option>
+            <option *ngFor="let workgroup of workgroups" [value]="workgroup.Id">{{workgroup.Name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row" *ngIf="isVolunteer">
+        <label for="nationality" class="col-md-4 col-form-label">
+
+        </label>
+        <div class="form-group col-md-8">
+          <table class="table">
+            <tr *ngFor="let workgroup of waitingListMember.WaitingListMemberWorkgroups">
+              <td>{{workgroup.Workgroup.Name}}</td>
+              <td class="text-right"><a class="btn" (click)="deleteWorkgroup(workgroup)"><i class="fas fa-trash ml-2"></i></a></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="form-row my-4">
+        <div class="col-12">
+          <hr />
+        </div>
+        <div class="col-6 text-left">
+          <a class="btn btn-link pl-0" (click)="previous()"><i class="fas fa-arrow-left mr-2"></i>Terug</a>
+        </div>
+        <div class="col-6 text-right">
+          <button class="btn btn-primary" role="button" [ngClass]="{'disabled': !frm.valid}" (click)="next(frm)">{{translate("[VOLGENDE]")}}<i class="fas fa-arrow-circle-right ml-2"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="col" *ngIf="step==3">
+      <div class="row">
+        <div class="col mb-3" [innerHTML]="(defaulttext + introContent)  || (isVolunteer? translate('[INTRO_VOLUNTEER]'): translate('[INTRO]'))">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-12 mt-4 mb-2">
+          <h3 *ngIf="subscriptionType!='self'">
+            {{translate("[ADDRESSTITLE_FIRSTNAME]")}}
+          </h3>
+          <h3 *ngIf="subscriptionType=='self'">
+            {{translate("[ADDRESSTITLE]")}}
+          </h3>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="address" class="col-md-4 col-form-label">
+          {{translate("[ADDRESS_NAME]")}}
+        </label>
+        <div class="form-group col-md-8">
+          <input type="text" class="form-control" id="addressName" name="addressName" placeholder="Naam van het gezin, organisatie, voorziening..."
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.PersonXAddresses[0].Address.Name"
+                 #addressName="ngModel" />
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="address" class="col-md-4 col-form-label">
+          {{translateDefaultField(4)}} <span *ngIf="getDefaultField(4).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-8">
+          <input type="text" class="form-control" id="street" name="street" placeholder="Straat, nr, bus"
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.PersonXAddresses[0].Address.Street"
+                 #street="ngModel"
+                 [required]="getDefaultField(4).RequiredWaitinglist">
+          <div class="invalid-feedback" *ngIf="street.invalid && (street.dirty || street.touched || allValidatorsVisible)">
+            {{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(4))}}
+
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="residence" class="col-md-4 col-form-label">
+          {{translateDefaultField(5)}} <span *ngIf="getDefaultField(5).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-2 col-sm-3">
+          <input type="text" class="form-control" id="postCode" name="postCode" placeholder="Postcode"
+                 appPostcode
+                 (location)="waitingListMember.Person.PersonXAddresses[0].Address.Location=$event"
+                 (country)="waitingListMember.Person.PersonXAddresses[0].Address.Country=$event"
+                 (province)="waitingListMember.Person.PersonXAddresses[0].Address.Province=$event"
+                 [elementToFocus]="GSMinput"
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.PersonXAddresses[0].Address.PostCode"
+                 #postcode="ngModel"
+                 [required]="getDefaultField(5).RequiredWaitinglist">
+          <div class="invalid-feedback" *ngIf="postcode.invalid && (postcode.dirty || postcode.touched || allValidatorsVisible) || (location.invalid && (location.dirty || location.touched || allValidatorsVisible))">
+            {{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(5))}}
+
+          </div>
+        </div>
+        <div class="form-group col-md-6 col-sm-9">
+          <input type="text" class="form-control" id="location" name="location" placeholder="Gemeente"
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.PersonXAddresses[0].Address.Location"
+                 #location="ngModel"
+                 [required]="getDefaultField(5).RequiredWaitinglist">
+
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="country" class="col-md-4 col-form-label">
+          {{translateDefaultField(7)}} <span *ngIf="getDefaultField(7).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-8">
+          <input type="text" class="form-control" id="country" name="country"
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.PersonXAddresses[0].Address.Country"
+                 #country="ngModel"
+                 [required]="getDefaultField(7).RequiredWaitinglist">
+          <div class="invalid-feedback" *ngIf="country.invalid && (country.dirty || country.touched || allValidatorsVisible)">
+            {{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(7))}}
+
+
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-12 mt-4 mb-2">
+          <h3 *ngIf="subscriptionType!='self'">
+            {{translate("[PERSONALCONTACT_FIRSTNAME]")}}
+          </h3>
+          <h3 *ngIf="subscriptionType=='self'">
+            {{translate("[PERSONALCONTACT]")}}
+          </h3>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="memberphone" class="col-md-4 col-form-label">
+          {{translateDefaultField(8)}} <span *ngIf="getDefaultField(8).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-8">
+          <input type="text" class="form-control" id="GSM" name="GSM"
+                 appTelephoneFormat
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.GSM"
+                 #GSMinput
+                 #GSM="ngModel"
+                 [required]="getDefaultField(8).RequiredWaitinglist" />
+          <div class="invalid-feedback" *ngIf="GSM.invalid && (GSM.dirty || GSM.touched || allValidatorsVisible)">
+            {{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(8))}}
+
+
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="homeEmail" class="col-md-4 col-form-label">
+          {{translateDefaultField(11)}} <span *ngIf="getDefaultField(11).RequiredWaitinglist">*</span>
+        </label>
+        <div class="form-group col-md-8">
+          <input type="email" class="form-control" id="homeEmail" name="homeEmail"
+                 [ngClass]="{'showValidator':allValidatorsVisible}"
+                 [(ngModel)]="waitingListMember.Person.HomeEmail"
+                 #homeEmail="ngModel"
+                 pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
+                 (blur)="log(homeEmail)"
+                 [required]="getDefaultField(11).RequiredWaitinglist" />
+          <div class="invalid-feedback" *ngIf="homeEmail.invalid && (homeEmail.dirty || homeEmail.touched || allValidatorsVisible)">
+            <span *ngIf="homeEmail.errors.required">
+              {{translate('[REQUIRED]').replace("[FIELD_NAME]", translateDefaultField(11))}}
+            </span>
+            <span *ngIf="homeEmail.errors.pattern">{{translate("[FORMAT]").replace("[FIELD_NAME]", translateDefaultField(11))}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-row my-4">
+        <div class="col-12">
+          <hr />
+        </div>
+        <div class="col-6 text-left">
+          <a class="btn btn-link pl-0" (click)="previous()"><i class="fas fa-arrow-left mr-2"></i>Terug</a>
+        </div>
+        <div class="col-6 text-right">
+          <button class="btn btn-primary" role="button" [ngClass]="{'disabled': !frm.valid}" (click)="next(frm)">{{translate("[VOLGENDE]")}}<i class="fas fa-arrow-circle-right ml-2"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="col" *ngIf="step==4">
+      <div class="row">
+        <div class="col mb-3" [innerHTML]="(defaulttext + introContent)  || (isVolunteer? translate('[INTRO_VOLUNTEER]'): translate('[INTRO]'))">
+        </div>
+      </div>
+      <div class="form-row" *ngIf="hasFields(fields ,3)">
+        <div class="col-md-12 mt-4 mb-2">
+          <h3>
+            {{ isVolunteer? translate("[EXTRA_CONTACT]"):translate("[CONTACT_PERSONS]")}}
+          </h3>
+        </div>
+      </div>
+      <div *ngFor="let field of fields">
+        <app-person-field-edit *ngIf="needToShow(field) && field.CustomEntityPartId===3"
+                               [field]="field"
+                               [language]="language"
+                               [person]="waitingListMember.Person"
+                               [fieldname]="translateField(field)"
+                               [allValidatorsVisible]="allValidatorsVisible"
+                               [requiredtext]="translate('[REQUIRED]')"></app-person-field-edit>
+      </div>
+      <div class="form-row">
+        <div class="col-md-12 mt-4 mb-2">
+          <h3>
+            {{translate("[EXTRA_INFORMATION]")}}
+          </h3>
+        </div>
+      </div>
+
+      <div *ngFor="let field of fields">
+        <app-person-field-edit *ngIf="needToShow(field)  && field.CustomEntityPartId===4"
+                               [field]="field"
+                               [language]="language"
+                               [person]="waitingListMember.Person"
+                               [fieldname]="translateField(field)"
+                               [required]="field.RequiredWaitinglist"
+                               [allValidatorsVisible]="allValidatorsVisible"
+                               [requiredtext]="translate('[REQUIRED]')"></app-person-field-edit>
+      </div>
+
+
+      <div class="form-row my-4">
+        <div class="col-12">
+          <hr />
+        </div>
+        <div class="col-6 text-left">
+          <a class="btn btn-link pl-0" (click)="previous()"><i class="fas fa-arrow-left mr-2"></i>Terug</a>
+        </div>
+        <div class="col-6 text-right">
+          <button *ngIf="!isSaving" class="btn btn-primary" role="button" type="submit" [ngClass]="{'disabled': !frm.valid}">{{translate("[VOLGENDE]")}}<i class="fas fa-arrow-circle-right ml-2"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="col" *ngIf="step==5">
+      <div class="row">
+        <div class="col mb-3" [innerHTML]="(defaulttext + introContent)  || (isVolunteer? translate('[INTRO_VOLUNTEER]'): translate('[INTRO]'))">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-md-12 mt-4 mb-2">
+          <h3 [innerHTML]="thankYouTitle">
+          </h3>
+        </div>
+        <div class="col-md-12" [innerHTML]="thankYouContent">
+        </div>
+      </div>
+      <div class="form-row my-4">
+        <div class="col-12 text-center">
+          <button class="btn btn-primary" (click)="reset()"><i class="fas fa-plus-circle mr-2"></i>{{translate("[THANKYOU_BUTTON]")}}</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

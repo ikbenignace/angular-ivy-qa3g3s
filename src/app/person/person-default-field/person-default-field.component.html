@@ -1,0 +1,49 @@
+<div *ngIf="field" [formGroup]="form">
+
+  <div class="form-row" [ngSwitch]="field.CustomEntityField.CustomEntityFieldTypeId">
+    <label [for]="field.key" class="col-md-4 col-form-label">
+      {{field.CustomEntityField.Name}} <span *ngIf="field.Required">*</span>
+    </label>
+    <div *ngSwitchCase="1" class="form-group col-md-8">
+      <input [id]="field.key" [formControlName]="field.key" type="text" class="form-control">
+    </div>
+    <div *ngSwitchCase="2" class="form-group col-md-8">
+      <!--textarea-->
+      <textarea [id]="field.key" [formControlName]="field.key" type="text" class="form-control" rows="10"></textarea>
+    </div>
+    <div *ngSwitchCase="7" class="form-group col-md-8">
+      <!--email-->
+      <input [id]="field.key" [formControlName]="field.key" type="text" class="form-control">
+    </div>
+    <div *ngSwitchCase="3" class="form-group col-md-8">
+      <!--dropdown-->
+      <select [id]="field.key" [formControlName]="field.key" class="form-control">
+        <option>---</option>
+        <option *ngFor="let o of field.CustomEntityField.CustomEntityOptions" [value]="o.Id">{{o.Name}}</option>
+      </select>
+    </div>
+
+    <!--<div *ngSwitchCase="3" class="form-group col-md-8 checkbox">
+      <div *ngIf="question.QuestionDisplayModeId==1">
+        <div class="form-check" *ngFor="let pa of question.PossibleAnswers">
+          <label class="form-check-label">
+            <input [id]="question.key" [formControlName]="question.key" class="form-check-input" type="radio" [value]="pa.Id">
+
+            {{pa.Name}}
+          </label>
+        </div>
+      </div>
+      <select *ngIf="question.QuestionDisplayModeId==2" [id]="question.key" [formControlName]="question.key" class="form-control">
+        <option value="">---</option>
+        <option *ngFor="let pa of question.PossibleAnswers" [value]="pa.Id">{{pa.Name}}</option>
+      </select>
+    </div>
+
+    <div *ngSwitchCase="4" class="form-group col-md-8">
+      <app-upload [key]="question.key"
+                  [form]="pageForm"
+                  [folder]="accessKey"
+                  [accessKey]="accessKey"></app-upload>
+    </div>-->
+  </div>
+</div>

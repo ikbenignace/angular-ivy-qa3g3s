@@ -1,0 +1,268 @@
+
+
+
+<div *ngIf="fields && form && translations">
+  <br>
+  <div class="page-title">
+    <div class="col title">
+      <h2 [innerHTML]="introTitle">
+      </h2>
+    </div>
+  </div>
+  <br>
+  <div class="row page-content" *ngIf="(fields && translations && waitingListMember) || success">
+    <form id="frm" name="frm">
+      <div class="col">
+        <div class="row">
+          <div class="col mb-3" [innerHTML]="(defaulttext + introContent) || (isVolunteer? translate('[INTRO_VOLUNTEER]'): translate('[INTRO]'))">
+
+          </div>
+        </div>
+        <ng-container *ngIf="step==1" [formGroup]="form.get('personData')">
+          <div *ngFor="let f of fields">
+            <ng-container *ngIf="f.Show">
+              <span *ngIf="form.get('personData').get(f.key)">
+              </span>
+              <!--<app-person-default-field *ngIf="f.CustomEntityField.CustomEntityDefaultFieldId"
+                                        [field]="f"
+                                        [form]="form"></app-person-default-field>
+
+              <app-person-custom-field *ngIf="!f.CustomEntityField.CustomEntityDefaultFieldId"
+                                       [field]="f"
+                                       [form]="form"></app-person-custom-field>-->
+
+              <ng-container *ngIf="[5].includes(f.CustomEntityField.CustomEntityDefaultFieldId); else defaultTemplate">
+                <div class="form-row">
+                  <label [for]="f.key" class="col-md-4 col-form-label">
+                    {{f.CustomEntityField.Name}} <span *ngIf="f.Required">*</span>
+                  </label>
+                  <ng-container *ngIf="f.CustomEntityField.CustomEntityDefaultFieldId==5">
+                    <div class="form-group col-md-2 col-sm-3">
+                      <input [id]="f.key" [formControlName]="f.key + 'pc'" type="text" class="form-control" />
+                    </div>
+                    <div class="form-group col-md-6 col-sm-9">
+                      <input [id]="f.key" [formControlName]="f.key + 'loc'" type="text" class="form-control" />
+                    </div>
+                  </ng-container>
+                </div>
+                <div *ngIf="form.get('personData').get(f.key + 'pc').invalid && (form.get('personData').get(f.key + 'pc').dirty || form.get('personData').get(f.key + 'pc').touched || allValidatorsVisible)"
+                     class="alert alert-danger">
+
+                  <div *ngIf="form.get('personData').get(f.key + 'pc').errors?.required">
+                    {{f.CustomEntityField.Name}} is vereist.
+                  </div>
+                  <div *ngIf="form.get('personData').get(f.key + 'pc').errors?.pattern">
+                    {{f.CustomEntityField.Name}} is niet geldig.
+                  </div>
+                </div>
+              </ng-container>
+
+              <ng-template #defaultTemplate>
+                <div class="form-row" *ngIf="!f.CustomEntityField.CustomEntityFieldType.HasOptions"
+                     [ngSwitch]="f.CustomEntityField.CustomEntityFieldTypeId">
+                  <label [for]="f.key" class="col-md-4 col-form-label">
+                    {{f.CustomEntityField.Name}} <span *ngIf="f.Required">*</span>
+                  </label>
+                  <div class="form-group col-md-8" *ngSwitchCase="2">
+                    <!--textarea-->
+                    <textarea [id]="f.key" [formControlName]="f.key" type="text" class="form-control" rows="3"></textarea>
+                  </div>
+                  <div class="form-group col-md-8" *ngSwitchCase="11">
+                    <input [id]="f.key" [formControlName]="f.key" type="checkbox" class="form-control" />
+                  </div>
+                  <div class="form-group col-md-3" *ngSwitchCase="9">
+                    <input [id]="f.key" [formControlName]="f.key" [placeholder]="datePlaceholder" class="form-control" type="date" />
+                  </div>
+                  <div class="form-group col-md-8" *ngSwitchDefault>
+                    <input [id]="f.key" [formControlName]="f.key" type="text" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="form-row" *ngIf="f.CustomEntityField.CustomEntityFieldType.HasOptions">
+                  <label [for]="f.key" class="col-md-4 col-form-label">
+                    {{f.CustomEntityField.Name}} <span *ngIf="f.Required">*</span>
+                  </label>
+                  <div class="form-group col-md-8">
+                    <!--dropdown-->
+                    <select [id]="f.key" [formControlName]="f.key" class="form-control">
+                      <option value="">---</option>
+                      <option *ngFor="let o of getOptions(f)" [value]="o.Id">{{o.Name}}</option>
+                    </select>
+                  </div>
+                  <!--<div *ngSwitchCase="3" class="form-group col-md-8 checkbox">
+                    <div *ngIf="question.QuestionDisplayModeId==1">
+                      <div class="form-check" *ngFor="let pa of question.PossibleAnswers">
+                        <label class="form-check-label">
+                          <input [id]="question.key" [formControlName]="question.key" class="form-check-input" type="radio" [value]="pa.Id">
+
+                          {{pa.Name}}
+                        </label>
+                      </div>
+                    </div>
+                    <select *ngIf="question.QuestionDisplayModeId==2" [id]="question.key" [formControlName]="question.key" class="form-control">
+                      <option value="">---</option>
+                      <option *ngFor="let pa of question.PossibleAnswers" [value]="pa.Id">{{pa.Name}}</option>
+                    </select>
+                  </div>
+
+                  <div *ngSwitchCase="4" class="form-group col-md-8">
+                    <app-upload [key]="question.key"
+                                [form]="pageForm"
+                                [folder]="accessKey"
+                                [accessKey]="accessKey"></app-upload>
+                  </div>-->
+
+
+                </div>
+                <div *ngIf="form.get('personData').get(f.key).invalid && (form.get('personData').get(f.key).dirty || form.get('personData').get(f.key).touched || allValidatorsVisible)"
+                     class="alert alert-danger">
+
+                  <div *ngIf="form.get('personData').get(f.key).errors?.required">
+                    {{f.CustomEntityField.Name}} is vereist.
+                  </div>
+                  <div *ngIf="form.get('personData').get(f.key).errors?.pattern">
+                    {{f.CustomEntityField.Name}} is niet geldig.
+                  </div>
+                  <div *ngIf="form.get('personData').get(f.key).errors?.email">
+                    {{f.CustomEntityField.Name}} bevat geen geldig e-mailadres.
+                  </div>
+                </div>
+              </ng-template>
+            </ng-container>
+
+          </div>
+          <div class="form-row my-4">
+            <div class="col-12">
+              <hr />
+            </div>
+            <div class="col-6 text-left">
+              <a *ngIf="step>1" class="btn btn-link pl-0" (click)="previous()"><i class="fas fa-arrow-left mr-2"></i>Terug</a>
+            </div>
+            <div class="col-6 text-right">
+              <button class="btn btn-primary" (click)="submit(form.get('personData'))" role="button" [disabled]="isSaving">
+                <span *ngIf="hasNextStep()">{{translate("[VOLGENDE]")}}<i class="fas fa-arrow-circle-right ml-2"></i></span>
+                <span *ngIf="!hasNextStep()"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Save</span>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngIf="step==2 && form" [formGroup]="form.get('teamData')">
+
+          <div class="form-row" *ngIf="personForm.UseMemberTeams">
+            <label for="nationality" class="col-md-4 col-form-label">
+              {{translate('[MEMBERSHIP]') }} <span *ngIf="personForm.MemberTeamRequired">*</span>
+            </label>
+            <div class="form-group col-md-8">
+              <select id="MemberTeam" formControlName="MemberTeam" class="form-control">
+                <option value="">---</option>
+                <option *ngFor="let o of memberTeams" [value]="o.Id">{{o.Name}}</option>
+              </select>
+
+
+            </div>
+          </div>
+          <div *ngIf="personForm.UseMemberTeams && form.get('teamData').get('MemberTeam').invalid && (form.get('teamData').get('MemberTeam').dirty || form.get('teamData').get('MemberTeam').touched || allValidatorsVisible)"
+               class="alert alert-danger">
+            {{translate('[MEMBERSHIP]') }} is vereist.
+          </div>
+
+          <div class="form-row" *ngIf="personForm.UseWorkgroups">
+            <label for="nationality" class="col-md-4 col-form-label">
+              {{translate("[WORKGROUP]")}}
+            </label>
+            <div class="form-group col-md-8">
+              <select id="Workgroup" formControlName="Workgroup" class="form-control">
+                <option value="">---</option>
+                <option *ngFor="let o of workgroups" [value]="o.Id">{{o.Name}}</option>
+              </select>
+
+            </div>
+          </div>
+          <div class="form-row" *ngIf="waitingListMember.WaitingListMemberWorkgroups">
+            <label for="nationality" class="col-md-4 col-form-label">
+
+            </label>
+            <div class="form-group col-md-8">
+              <table class="table">
+                <tr *ngFor="let workgroup of waitingListMember.WaitingListMemberWorkgroups">
+                  <td>{{workgroup.Workgroup.Name}}</td>
+                  <td class="text-right"><a class="btn" (click)="deleteWorkgroup(workgroup)"><i class="fas fa-trash ml-2"></i></a></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="!hasNextStep() && personForm.ShowCanSendCommercial">
+            <label class="col-md-4 col-form-label">
+
+            </label>
+            <div class="form-group col-md-8">
+              <input id="commercial" formControlName="commercial" type="checkbox" /><label for="commercial">&nbsp;Ja, hou me op de hoogte van toekomstige activiteiten.</label>
+            </div>
+          </div>
+          <div class="form-row" *ngIf="!hasNextStep()">
+            <label class="col-md-4 col-form-label">
+
+            </label>
+            <div class="form-group col-md-8">
+              <input id="privacy" formControlName="privacy" required type="checkbox" /><label for="privacy">&nbsp;Ja, ik heb de <a [href]="personForm.PrivacyUrl" target="_blank">privacyverklaring</a> gelezen en goedgekeurd.</label>
+            </div>
+          </div>
+          <div *ngIf="form.get('teamData').get('privacy').invalid && (form.get('teamData').get('privacy').dirty || form.get('teamData').get('privacy').touched || allValidatorsVisible)"
+               class="alert alert-danger">
+            Je moet de privacyverklaring lezen en goedkeuren.
+          </div>
+          <div class="form-row my-4">
+            <div class="col-12">
+              <hr />
+            </div>
+            <div class="col-6 text-left">
+              <a *ngIf="step>1" class="btn btn-link pl-0" (click)="previous()"><i class="fas fa-arrow-left mr-2"></i>Terug</a>
+            </div>
+            <div class="col-6 text-right">
+              <button class="btn btn-primary" (click)="submit(form.get('teamData'))" role="button" [disabled]="isSaving">
+                <span *ngIf="hasNextStep()">{{translate("[VOLGENDE]")}}<i class="fas fa-arrow-circle-right ml-2"></i></span>
+                <span *ngIf="!hasNextStep() && !isSaving">
+                  <span *ngIf="personForm.NeedToPayMemberMoney">{{translate("[PAY]")}}<i class="fas fa-arrow-circle-right ml-2"></i></span>
+                  <span *ngIf="!personForm.NeedToPayMemberMoney">{{translate("[VERSTUREN]")}}<i class="fas fa-plus-circle ml-2"></i></span>
+                </span>
+                <span *ngIf="isSaving"><i class="fas fa-spinner fa-spin mr-2" aria-hidden="true"></i>Bezig...</span>
+              </button>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="success && paymentSuccess=='true'">
+          <div class="form-row">
+            <div class="col-md-12 mt-4 mb-2">
+              <h3 [innerHTML]="thankYouTitle">
+              </h3>
+            </div>
+            <div class="col-md-12" [innerHTML]="thankYouContent">
+            </div>
+          </div>
+          <div class="form-row my-4">
+            <div class="col-12 text-center">
+              <button class="btn btn-primary" (click)="reset()"><i class="fas fa-plus-circle mr-2"></i>{{translate("[THANKYOU_BUTTON]")}}</button>
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="success && paymentSuccess=='false'">
+          <div class="form-row">
+            <div class="col-md-12 mt-4 mb-2">
+              <h3>
+                Er is iets fout gelopen met de betaling.
+              </h3>
+            </div>
+            <div class="col-md-12" [innerHTML]='translate("[PAYMENT_FAILED]")'>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </form>
+  </div>
+
+
+
+
+</div>

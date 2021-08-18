@@ -1,0 +1,102 @@
+<div *ngIf="pages && hasAccess" [formGroup]="form">
+  <br>
+  <div>
+    <div class="page-title">
+      <div class="col title">
+        <h2>{{pages[currentPageIndex].Title}}</h2>
+      </div>
+    </div>
+    <br>
+
+    <div class="row page-content" *ngIf="!submitted">
+      <div class="col">
+        <div class="row">
+          <div class="col mb-3" [innerHTML]="pages[currentPageIndex].Introduction">
+          </div>
+        </div>
+
+        <div *ngFor="let p of pages[currentPageIndex].Paragraphs">
+          <div class="form-row">
+            <div class="col-md-12 mt-4 mb-2">
+              <h3>{{p.Title}}</h3>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col mb-3" [innerHTML]="p.Introduction">
+            </div>
+          </div>
+          <div *ngFor="let q of p.Questions">
+            <app-question *ngIf="q.isVisible"
+                          [accessKey]="accessKey"
+                          [question]="q"
+                          [pageForm]="getFormGroup('page'+ pages[currentPageIndex].Id)"
+                          [form]="form"
+                          [answers]="answers"
+                          [pages]="pages"></app-question>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row page-content" *ngIf="submitted">
+      <div class="col">
+        <div class="form-row">
+          <div class="col-md-12 mt-4 mb-2">
+            <h3>Bedankt voor je inschrijving</h3>
+          </div>
+          <div class="col-md-12">
+            We hebben je inschrijving goed ontvangen. Bedankt daarvoor! Van zodra we je inschrijving nagekeken hebben, krijg je de nodige praktische afspraken via mail toegestuurd.
+          </div>
+        </div>
+        <div class="form-row my-5">
+          <div class="col-12 text-center">
+            <a class="btn btn-primary" href="/NL/{{accessKey}}/form/{{formKey}}/{{formId}}/document/0"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Nieuwe inschrijving</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row my-4" *ngIf="currentPageIndex == 0 &&!submitted">
+      <div class="col-12 text-center">
+        <button class="btn btn-primary" (click)="nextPage()" [disabled]="getFormGroup('page'+ pages[currentPageIndex].Id).invalid" role="button"><i class="fas fa-plus-circle mr-2" aria-hidden="true"></i>Start</button>
+      </div>
+    </div>
+    <div class="form-row my-4" *ngIf="currentPageIndex > 0 &&!submitted">
+      <div class="col-12">
+        <hr>
+      </div>
+      <div class="col-6 text-left">
+        <button class="btn btn-link pl-0" (click)="prevPage()"><i class="fas fa-arrow-left mr-2" aria-hidden="true"></i>Terug</button>
+      </div>
+      <div class="col-6 text-right">
+        <button *ngIf="currentPageIndex != pages.length-1" class="btn btn-primary" (click)="nextPage()" [disabled]="getFormGroup('page'+ pages[currentPageIndex].Id).invalid" role="button">Volgende<i class="fas fa-arrow-circle-right ml-2" aria-hidden="true"></i></button>
+        <button *ngIf="currentPageIndex == pages.length-1" class="btn btn-primary" (click)="submitDocument()" [disabled]="getFormGroup('page'+ pages[currentPageIndex].Id).invalid" role="button">Indienen<i class="fas fa-arrow-circle-right ml-2" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!hasAccess && formObject">
+  <br>
+  <div>
+    <div class="page-title">
+      <div class="col title">
+        <h2>{{formObject.Name}}</h2>
+      </div>
+    </div>
+    <br>
+    <div class="row page-content">
+      <div class="col">
+        <div class="form-row">
+          <div class="col-md-12 mt-4 mb-2">
+            <h3>Formulier afgesloten</h3>
+          </div>
+          <div class="col-md-12">
+            De uiterste indiendatum voor {{formObject.Name}} was <strong>{{formObject.Deadline | date:'EEEE d LLLL yyyy'}}</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

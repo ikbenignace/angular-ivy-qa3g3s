@@ -1,0 +1,24 @@
+//naar werkdirectory gaan
+cd Assist.Web.Public/clientApp
+
+//nieuwe module bij maken
+ng g module form --route form --module layout/layout.module 
+
+//nieuwe service
+ng g service ../services/memberMoney --skipTests=true
+
+//nieuwe interface (model)
+ng g interface ../models/memberMoney
+
+//nieuwe component
+ng g component _component/memberMoney --module app --skipTests=true
+
+
+//nieuwe directive
+ng g directive _directives/telephoneFormat --module app --skipTests=true
+
+//build met hashing
+ ng build --output-hashing all 
+
+ //lokaal runnen
+ ng serve

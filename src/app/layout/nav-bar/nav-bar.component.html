@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-md navbar-light">
+  <a class="navbar-brand" href="https://www.assistonline.eu" target="_blank">
+    <img src="/assets/img/Assist_Logo.png" height="30" />
+  </a>
+
+  <ul class="nav nav-pills ml-auto">
+    <li *ngIf="memberKey" class="nav-item">
+      <a class="nav-link" [routerLink]="language == 'NL' ? ['/NL', accesskey, 'member', memberKey, 'pay']: ['/FR', accesskey, 'member', memberKey, 'pay']">Lidgeld</a>
+    </li>
+    <li *ngIf="memberKey" class="nav-item">
+      <a class="nav-link" [routerLink]="language == 'NL' ? ['/NL', accesskey, 'member', memberKey, 'calendar']: ['/FR', accesskey, 'member', memberKey, 'calendar']">Kalender</a>
+    </li>
+    <li *ngIf="startSettings && memberKey && startSettings.MemberPublicAccessType != 0" class="nav-item">
+      <a class="nav-link" href="https://mijnassist.be/publiek/#/h/mijnassist/{{memberKey}}/{{accessKey}}">Persoonsgegevens</a>
+    </li>
+    <!--<li *ngIf="memberKey" class="nav-item">
+      <a class="nav-link" [routerLink]="language == 'NL' ? ['/FR', accesskey, 'member', memberKey, url]: ['/NL', accesskey, 'member', memberKey, url]">{{language}}</a>
+    </li>-->
+    <li *ngIf="!memberKey && !formKey" class="nav-item">
+      <a class="nav-link" [routerLink]="language == 'NL' ? ['/FR', accesskey, 'waitinglist', 'subscribe']: ['/NL', accesskey, 'waitinglist', 'subscribe']">{{language}}</a>
+    </li>
+  </ul>
+</nav>

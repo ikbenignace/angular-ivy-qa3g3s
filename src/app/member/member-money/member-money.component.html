@@ -1,0 +1,143 @@
+<br>
+
+<div class="page-title" *ngIf="member">
+  <div class="col title">
+    <h2>{{translate("[TITLE]")}}</h2>
+  </div>
+</div>
+<br>
+
+<div class="row page-content" *ngIf="member">
+  <div class="col">
+    <form>
+      <div class="row">
+        <div class="col mb-3" [innerHTML]="translate('[INTRO]')">
+        </div>
+      </div>
+      <div class="form-row mt-4">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[DEFAULT]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="&nbsp;">
+        </div>
+        <div class="form-group col-4 col-md-2" style="text-align: right;">
+          {{member.MemberMoneyTeam1 | currencyFormat }}
+        </div>
+      </div>
+
+      <div class="form-row" *ngIf="member.InsuranceFee>0">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[INSURANCE]")}}
+        </label>
+        <div class="form-group col-1 col-md-1 right">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="+">
+        </div>
+        <div class="form-group col-4 col-md-2" style=" text-align: right;">
+          {{member.InsuranceFee | currencyFormat }}
+
+        </div>
+      </div>
+      <div class="form-row" *ngIf="member.FamilyDiscount>0">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[FAMILY_DISCOUNT]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="-">
+        </div>
+        <div class="form-group col-4 col-md-2" style="border-bottom: 2px solid #49515a; text-align: right;">
+          {{member.FamilyDiscount | currencyFormat }}
+        </div>
+      </div>
+      <div class="form-row" *ngIf="member.SocialDiscount>0">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[SOCIAL_DISCOUNT]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="-">
+        </div>
+        <div class="form-group col-4 col-md-2" style="border-bottom: 2px solid #49515a; text-align: right;">
+          {{member.SocialDiscount | currencyFormat }}
+        </div>
+      </div>
+      <div class="form-row" *ngIf="member.DiscountInjury>0">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[INJURY_DISCOUNT]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="-">
+        </div>
+        <div class="form-group col-4 col-md-2" style="border-bottom: 2px solid #49515a; text-align: right;">
+          {{member.DiscountInjury | currencyFormat }}
+        </div>
+      </div>
+      <div class="form-row" *ngIf="member.OtherDiscount>0">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[OTHER_DISCOUNT]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="-">
+        </div>
+        <div class="form-group col-4 col-md-2" style="border-bottom: 2px solid #49515a; text-align: right;">
+          {{member.OtherDiscount | currencyFormat }}
+        </div>
+      </div>
+      <div class="form-row" *ngIf="member.ExtraSurPlus>0">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[SURPLUS]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="+">
+        </div>
+        <div class="form-group col-4 col-md-2" style="border-bottom: 2px solid #49515a; text-align: right;">
+          {{member.ExtraSurPlus | currencyFormat }}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[TOTAL]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="&nbsp;">
+        </div>
+        <div class="form-group col-4 col-md-2" style=" text-align: right;">
+          {{member.Saldo + member.PayedAmount | currencyFormat }}
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[PAID]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="-">
+        </div>
+        <div class="form-group col-4 col-md-2" style="border-bottom: 2px solid #49515a; text-align:right;">
+          {{member.PayedAmount | currencyFormat }}
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="col-5 offset-1 col-md-3 offset-md-3 col-form-label" style="text-align: left;">
+          {{translate("[SALDO]")}}
+        </label>
+        <div class="form-group col-1 col-md-1">
+          <input type="text" readonly class="form-control-plaintext" id="firstname" style="text-align: right;" value="&nbsp;">
+        </div>
+        <div class="form-group col-4 col-md-2" style="text-align: right;">
+          {{member.Saldo | currencyFormat }}
+        </div>
+      </div>
+      <br><br>
+      <div class="form-row" *ngIf="member.Saldo>0">
+        <div class="col-12 text-center">
+          <button class="btn btn-primary" (click)="pay()"> {{translate("[BTN_PAY]")}}</button>
+        </div>
+      </div>
+      <div class="form-row" *ngIf="!member.Saldo>0">
+        <div class="col-12 text-center">
+          <button class="btn btn-primary" [class.green]="member.Saldo==0"> {{translate("[BTN_PAID]")}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

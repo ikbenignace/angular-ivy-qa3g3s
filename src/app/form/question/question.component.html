@@ -1,0 +1,43 @@
+<div [formGroup]="pageForm" >
+  <div class="form-row" [ngSwitch]="question.QuestionTypeId">
+    <label [for]="question.key" class="col-md-4 col-form-label">
+      {{question.Question}} <span *ngIf="question.IsRequired">*</span>
+    </label>
+    <div *ngSwitchCase="1" class="form-group col-md-8">
+      <input *ngIf="question.NumberOfLines==1" [id]="question.key" [formControlName]="question.key" type="text" class="form-control">
+      <textarea *ngIf="question.NumberOfLines>1" [id]="question.key" [formControlName]="question.key" type="text" class="form-control" [rows]="question.NumberOfLines"></textarea>
+    </div>
+    <div *ngSwitchCase="14" class="form-group col-md-8">
+      <input [id]="question.key" [formControlName]="question.key" type="text" class="form-control">
+    </div>
+    <div *ngSwitchCase="2" class="form-group col-md-8">
+      <select [id]="question.key" [formControlName]="question.key" class="form-control">
+        <option>---</option>
+        <option *ngFor="let pa of question.PossibleAnswers" [value]="pa.Id">{{pa.Name}}</option>
+      </select>
+    </div>
+
+    <div *ngSwitchCase="3" class="form-group col-md-8 checkbox">
+      <div *ngIf="question.QuestionDisplayModeId==1">
+        <div class="form-check" *ngFor="let pa of question.PossibleAnswers">
+          <label class="form-check-label">
+            <input [id]="question.key" [formControlName]="question.key" class="form-check-input" type="radio" [value]="pa.Id">
+
+            {{pa.Name}}
+          </label>
+        </div>
+      </div>
+      <select *ngIf="question.QuestionDisplayModeId==2" [id]="question.key" [formControlName]="question.key" class="form-control">
+        <option value="">---</option>
+        <option *ngFor="let pa of question.PossibleAnswers" [value]="pa.Id">{{pa.Name}}</option>
+      </select>
+    </div>
+
+    <div *ngSwitchCase="4" class="form-group col-md-8">
+      <app-upload [key]="question.key"
+                  [form]="pageForm"
+                  [folder]="accessKey"
+                  [accessKey]="accessKey"></app-upload>
+    </div>
+  </div>
+</div>

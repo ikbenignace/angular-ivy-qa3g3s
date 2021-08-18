@@ -1,0 +1,29 @@
+<div *ngIf="person">
+  <br>
+  <div>
+    <div class="page-title">
+      <div class="col title">
+        <h2>Persoonsgevens van {{person.FirstName}} {{person.LastName}}</h2>
+        {{person.HomePhone}}
+      </div>
+    </div>
+    <br>
+
+    <div class="row page-content">
+      <div class="col mb-3">
+        Wij gebruiken <a href="https://www.assistonline.eu" target="_blank">Assist</a>
+        om de persoonsgegevens van onze leden te beheren. Op deze pagina kan je
+        eerst de gegevens van {{person.FirstName}} {{person.LastName}}
+        nakijken en aanpassen indien nodig.
+        Op de volgende pagina kan je vervolgens het lidgeld voor {{person.FirstName}} {{person.LastName}} online betalen.
+
+        <div class="col mt-5">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
